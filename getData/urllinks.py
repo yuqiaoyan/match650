@@ -1,4 +1,5 @@
 import urllib
+import string
 from BeautifulSoup import *
 
 personURLPattern    =   re.compile(r"([/]person[/].*?)[;]")
@@ -28,6 +29,11 @@ def downloadPage(URLSuffix):
     newFile = open("arnetminer/"+urlName,'w')
     newFile.write(html)
 
+def getAllChildren(URLSuffix):
+#given a list of URLs get all URLS from arnetminer
+    for link in URLSuffix:
+        downloadPage(link)
+
 def main():
     testFile = open("arnetminer/qiaozhuMei.html")
     html = testFile.read()
@@ -45,7 +51,6 @@ def main():
             and string.find(URLSuffix,"personbasic") < 0:
             profilesList.append(URLSuffix)
 
-    print profilesList
-    downloadPage(profilesList[0])
+    getAllChildren(profilesList)
 
 main()
