@@ -1,0 +1,44 @@
+
+    
+    def getData
+
+dictionary configs = {'affiliation': ('stored','analyzed')}
+
+//----------
+private static void addField(Document doc, String userField, String value){
+  //adds the field to the index
+        doc.add(new Field(configs[type]
+
+      /*if(userField.equals("interests"))
+         profile.add(new Field("interests",value,Field.Store.YES,Field.Index.NO));
+         else if (userField.equals("affiliation"))
+              profile.add(new Field("affiliation",value,Field.Store.YES,Field.Index.NOT_ANALYZED));
+         else
+             profile.add(new Field("content",value,Field.Store.YES,Field.Index.ANALYZED));*/
+  }
+
+
+addDoc(IndexWriter w, Dictionary profile) throws IOException{
+//profile is a dictionary of a professor's profile
+// [name]['Eytan Adar']
+// [affiliation]['univ of michigan']
+    Document doc = new Document();
+    for key, value in profile.items():
+        config_t = configs[key]
+        doc.add(new Field(key,value, config_t[0],config_t[1]
+        
+} 
+
+buildIndex{
+    IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, analyzer);
+
+    IndexWriter w = new IndexWriter(index, config);
+
+    getData()
+    //get all data from database to build index
+    //(id, name, affiliation, interest) returns cursor object from database
+    for each row of data
+        profile = dict(zip(['id', 'name', 'affiliation','interest'],cursor.fetch()))
+     
+        addDoc(w, profile);
+}
