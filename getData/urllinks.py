@@ -1,9 +1,9 @@
 import urllib
 import string
 from BeautifulSoup import *
+import json
 
 personURLPattern    =   re.compile(r"([/]person[/].*?)[;]")
-
 profilesList = []
 
 
@@ -34,12 +34,21 @@ def getAllChildren(URLSuffix):
     for link in URLSuffix:
         downloadPage(link)
 
+def getINFO(name):
+#get ID and affiliation from professor name off arnetminer
+	url = "http://arnetminer.org/services/person/"
+	url = url + name + "?u=oyster&o=tff"
+	jsonString = urllib.urlopen(url).read()
+	#print jsonString
+	dict = json.loads(jsonString)[0]
+	return dict["Id"], dict["Affiliation"]
+
 def main():
     testFile = open("arnetminer/qiaozhuMei.html")
     html = testFile.read()
     soup = BeautifulSoup(html)
 
-    # Retrieve all of the anchor tags
+    #Retrieve all of the anchor tags
     tags = soup('a')
 
     for tag in tags:
@@ -53,4 +62,4 @@ def main():
 
     getAllChildren(profilesList)
 
-main()
+getID("eytan adar")

@@ -1,6 +1,6 @@
 
     
-    def getData
+def getData
 
 dictionary configs = {'affiliation': ('stored','analyzed')}
 

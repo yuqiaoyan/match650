@@ -33,9 +33,12 @@ public class HelloLucene {
     addDoc(w, "Managing Gigabytes");
     addDoc(w, "The Art of Computer Science");
     w.close();
+    IndexReader r = IndexReader.open(index);
+    r.
+    
 
     // 2. query
-    String querystr = args.length > 0 ? args[0] : "social";
+    /*String querystr = args.length > 0 ? args[0] : "social";
 
     // the "title" arg specifies the default field to use
     // when no field is explicitly specified in the query.
@@ -58,7 +61,7 @@ public class HelloLucene {
 
     // searcher can only be closed when there
     // is no need to access the documents any more. 
-    searcher.close();
+    searcher.close();*/
   }
 
   public enum fieldName{
@@ -89,4 +92,7 @@ public class HelloLucene {
         //doc.add(new Field("title", value, Field.Store.YES, Field.Index.ANALYZED));
     w.addDocument(doc);
   }
+  
+  
+  
 }
