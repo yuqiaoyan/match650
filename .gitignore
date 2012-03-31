@@ -1,0 +1,8 @@
+#CSV datafile#
+##############
+*.csv
+
+#Python compile file#
+#####################
+*.pyc
+
