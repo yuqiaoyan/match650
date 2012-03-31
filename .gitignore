@@ -7,5 +7,11 @@
 *.pyc
 
 #vim temp file#
+###############
 *.py.swp
+
+#Index Tmp DIR#
+Tmp
+*.index-dir
+
 
