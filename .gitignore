@@ -6,3 +6,6 @@
 #####################
 *.pyc
 
+#vim temp file#
+*.py.swp
+
