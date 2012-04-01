@@ -56,6 +56,7 @@ def read_file_build(name_list):
             profile = get_info(name, ID_KEY, AFFLI_KEY)
             if profile[INTEREST_KEY]:
                 addDoc(writer, profile)
+    writer.commit()
 
 if __name__ == '__main__':
     read_file_build(sys.argv[1])
