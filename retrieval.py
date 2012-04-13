@@ -10,6 +10,11 @@ INDEX_DIR = "Tmp/REMOVEME.index-dir"
 STUDENT_PATH = "getData/student_data/"
 MAX = 10
 
+def explain_score(searcher, docID, query):
+	explanation = searcher.explain(query, docID)
+	print "Explanation Dump: "
+	print explanation.toString()
+
 def initial_searcher():
     lucene.initVM()
     indexDir = INDEX_DIR 
@@ -27,6 +32,7 @@ def search_by_student(student, analyzer, searcher):
         doc = searcher.doc(hit.doc)
         print doc.get("name").encode("utf-8")
         print doc.get("interest").encode("utf-8")
+        explain_score(searcher,hit.doc,query)
 
 if __name__ == "__main__":
     searcher, analyzer = initial_searcher()
