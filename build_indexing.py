@@ -37,7 +37,8 @@ def get_info(name, *attributes):
             if key == ID_KEY:
                 Id = str(re_dict[key])
                 result[INTEREST_KEY] = get_interest_by_id(Id)
-                result[AFFLI_KEY.lower()] = get_co_afflication_by_id(Id)
+                result[AFFLI_KEY.lower()] = \
+                    get_co_affiliation_by_id(Id)
                 continue
             try:
                 result[key.lower()] = str(re_dict[key].encode('utf8'))
@@ -46,7 +47,8 @@ def get_info(name, *attributes):
                 result[key.lower()] = ' '
     result[NAME_KEY] = name
     return result
-def get_co_afflication_by_id(Id):
+def get_co_affiliation_by_id(Id):
+    print 'get affiations'
     url = "http://arnetminer.org/services/person/"
     reader = csv.reader(open('getData/coauthor.csv','r'))
     co_auther_ids = []
@@ -58,14 +60,16 @@ def get_co_afflication_by_id(Id):
             co_auther_ids.append(au)
     if co_auther_ids:
         for au_id in co_auther_ids:
+            print 'getting id ....', au_id
             url = url + Id + "?u=oyster&o=tff"
             jsonString = urllib.urlopen(url).read()
             json_list = json.loads(jsonString)
             if json_list:
-                re_dict = json.loads(jsonString)
+                re_dict = json_list[0]
                 if re_dict.get(AFFLI_KEY):
+                    print re_dict[AFFLI_KEY]
                     affiliation.append(re_dict[AFFLI_KEY])
-    return ''.join(affiliation)
+    return ' '.join(list(set(affiliation)))
 
 
 

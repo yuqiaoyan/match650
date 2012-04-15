@@ -29,7 +29,8 @@ def addDoc(indexWriter, profile):
 def initializeIndex():
 #returns an IndexWriter to build an index
 	lucene.initVM()
-	indexDir = "Tmp/REMOVEME.index-dir"
+#	indexDir = "Tmp/REMOVEME.index-dir"
+	indexDir = "Tmp/affiliation.index-dir"
 	dir = SimpleFSDirectory(File(indexDir))
 	analyzer = StandardAnalyzer(Version.LUCENE_35)
 	return IndexWriter(dir, analyzer, True, IndexWriter.MaxFieldLength(512))	
