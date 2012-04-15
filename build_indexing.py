@@ -49,7 +49,7 @@ def get_info(name, *attributes):
     return result
 def get_co_affiliation_by_id(Id):
     print 'get affiations'
-    url = "http://arnetminer.org/services/person/"
+    base_url = "http://arnetminer.org/services/person/"
     reader = csv.reader(open('getData/coauthor.csv','r'))
     co_auther_ids = []
     affiliation = []
@@ -60,13 +60,15 @@ def get_co_affiliation_by_id(Id):
             co_auther_ids.append(au)
     if co_auther_ids:
         for au_id in co_auther_ids:
+            re_dict = {}
             print 'getting id ....', au_id
-            url = url + Id + "?u=oyster&o=tff"
+            url = base_url + au_id + "?u=oyster&o=tff"
             jsonString = urllib.urlopen(url).read()
             json_list = json.loads(jsonString)
             if json_list:
                 re_dict = json_list[0]
                 if re_dict.get(AFFLI_KEY):
+                    print re_dict['Name']
                     print re_dict[AFFLI_KEY]
                     affiliation.append(re_dict[AFFLI_KEY])
     return ' '.join(list(set(affiliation)))
