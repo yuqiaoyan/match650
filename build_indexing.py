@@ -22,6 +22,8 @@ def interest_dict (file_name):
     return re_dict
 IN_DICT = interest_dict(INTERESTS_PATH)
 
+
+
 def get_info(name, *attributes):
 # get information from arnetminer
     url = "http://arnetminer.org/services/person/"
@@ -35,6 +37,7 @@ def get_info(name, *attributes):
             if key == ID_KEY:
                 Id = str(re_dict[key])
                 result[INTEREST_KEY] = get_interest_by_id(Id)
+                result[AFFLI_KEY.lower()] = get_co_afflication_by_id(Id)
                 continue
             try:
                 result[key.lower()] = str(re_dict[key].encode('utf8'))
@@ -43,6 +46,28 @@ def get_info(name, *attributes):
                 result[key.lower()] = ' '
     result[NAME_KEY] = name
     return result
+def get_co_afflication_by_id(Id):
+    url = "http://arnetminer.org/services/person/"
+    reader = csv.reader(open('getData/coauthor.csv','r'))
+    co_auther_ids = []
+    affiliation = []
+    for au, co, num in reader:
+        if au == Id:
+            co_auther_ids.append(co)
+        elif co == Id:
+            co_auther_ids.append(au)
+    if co_auther_ids:
+        for au_id in co_auther_ids:
+            url = url + Id + "?u=oyster&o=tff"
+            jsonString = urllib.urlopen(url).read()
+            json_list = json.loads(jsonString)
+            if json_list:
+                re_dict = json.loads(jsonString)
+                if re_dict.get(AFFLI_KEY):
+                    affiliation.append(re_dict[AFFLI_KEY])
+    return ''.join(affiliation)
+
+
 
 def get_interest_by_id(Id):
     return IN_DICT.get(Id)
@@ -53,7 +78,7 @@ def read_file_build(name_list):
         for line in f:
             name = line.strip()
             print name
-            profile = get_info(name, ID_KEY, AFFLI_KEY)
+            profile = get_info(name, ID_KEY)
             if profile[INTEREST_KEY]:
                 addDoc(writer, profile)
     writer.commit()
