@@ -2,6 +2,7 @@ import sys
 import json
 import urllib
 import csv
+import time
 from indexing import addDoc, initializeIndex
 from lucene import *
 from BeautifulSoup import *
@@ -11,7 +12,7 @@ INTEREST_KEY = 'interest'
 ID_KEY = 'Id'
 AFFLI_KEY = 'Affiliation'
 INTERESTS_PATH = 'getData/person_interest.csv'
-
+MISSINGCOAUTHOR = 0
 
 def interest_dict (file_name):
     reader = csv.reader(open(file_name, 'r'), delimiter=',',
@@ -62,15 +63,24 @@ def get_co_affiliation_by_id(Id):
         for au_id in co_auther_ids:
             re_dict = {}
             print 'getting id ....', au_id
+            if( int(au_id) < 0):
+                continue
             url = base_url + au_id + "?u=oyster&o=tff"
-            jsonString = urllib.urlopen(url).read()
-            json_list = json.loads(jsonString)
-            if json_list:
-                re_dict = json_list[0]
-                if re_dict.get(AFFLI_KEY):
-                    print re_dict['Name']
-                    print re_dict[AFFLI_KEY]
-                    affiliation.append(re_dict[AFFLI_KEY])
+            #if the server returns an error, wake 1 minute before attempt to get next authorID info
+            try:
+                jsonString = urllib.urlopen(url).read()
+                json_list = json.loads(jsonString)
+                if json_list:
+                    re_dict = json_list[0]
+                    if re_dict.get(AFFLI_KEY):
+                        print re_dict['Name']
+                        print re_dict[AFFLI_KEY]
+                        affiliation.append(re_dict[AFFLI_KEY])
+            except:
+                global MISSINGCOAUTHOR
+                MISSINGCOAUTHOR += 1
+                time.sleep(60)
+            
     return ' '.join(list(set(affiliation)))
 
 
@@ -91,5 +101,6 @@ def read_file_build(name_list):
 
 if __name__ == '__main__':
     read_file_build(sys.argv[1])
+    print "number of missing coauthors is " + str(MISSINGCOAUTHOR)
 
 

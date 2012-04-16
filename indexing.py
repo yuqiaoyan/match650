@@ -24,7 +24,7 @@ def addDoc(indexWriter, profile):
         print 'adding doc!', key, value
         config_t = configs[key]
         doc.add(Field(key,value, Field.Store.valueOf(config_t[0]),Field.Index.valueOf(config_t[1]),Field.TermVector.valueOf(config_t[2])))
-        indexWriter.addDocument(doc)
+    indexWriter.addDocument(doc)
 
 def initializeIndex():
 #returns an IndexWriter to build an index
