@@ -3,7 +3,8 @@ import csv
 import os
 import lucene
 from lucene import *
-INDEX_DIR = "Tmp/REMOVEME.index-dir"
+#INDEX_DIR = "Tmp/REMOVEME.index-dir"
+INDEX_DIR = "Tmp/affiliation.index-dir"
 STUDENT_PATH = "getData/student_data/"
 MAX = 10
 
@@ -48,11 +49,13 @@ def search_by_student(student, analyzer, searcher,fieldList):
         print doc.get("name")
         print doc.get("interest")
         print doc.get("affiliation")
-        explanation = explain_score(searcher,hit.doc,query)
+        print '...................'
+        print '...................'
+        #explanation = explain_score(searcher,hit.doc,query)
         #explanationOutput += explanation.toHtml()
 
-	print "this is the hits.scoreDocs..."
-	print hits.scoreDocs
+	#print "this is the hits.scoreDocs..."
+	#print hits.scoreDocs
     #write the explanation for the scores
     #outputFile = open("explanation.html","w")   
     #outputFile.write(explanationOutput)
@@ -64,8 +67,9 @@ if __name__ == "__main__":
 
     for f in os.listdir(STUDENT_PATH):
         print 'opening', STUDENT_PATH + f
-        reader = csv.reader(open(STUDENT_PATH + f, 'r'), delimiter=',', quotechar='\"')
+        reader = csv.reader(open(STUDENT_PATH + f, 'r'), delimiter=',', quotechar='"')
         for line in reader:
+            print line
             student_profile = {}
             student_profile['name'] = line[0]
             student_profile['interest'] = line[1]
@@ -76,6 +80,9 @@ if __name__ == "__main__":
             print '.......'
             print 'result is:'
             search_by_student(student_profile, analyzer, searcher,fieldList)
+            print '___________________________'
+            print '___________________________'
+            print '___________________________'
 
     
 

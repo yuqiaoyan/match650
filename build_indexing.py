@@ -35,13 +35,18 @@ def get_info(name, *attributes):
     if json_list:
         re_dict = json_list[0]
         for key in attributes:
+            if int(re_dict[key]) < 0:
+                continue
             if key == ID_KEY:
+                print 'get id'
                 Id = str(re_dict[key])
                 result[INTEREST_KEY] = get_interest_by_id(Id)
+                print 'get coauthor afflication for', Id, name
                 result[AFFLI_KEY.lower()] = \
                     get_co_affiliation_by_id(Id)
                 continue
             try:
+                print key, re_dict[key]
                 result[key.lower()] = str(re_dict[key].encode('utf8'))
             except KeyError:
                 print >> sys.stderr, "the key", key, "doesn't exist!, set to empty string!"
@@ -49,7 +54,6 @@ def get_info(name, *attributes):
     result[NAME_KEY] = name
     return result
 def get_co_affiliation_by_id(Id):
-    print 'get affiations'
     base_url = "http://arnetminer.org/services/person/"
     reader = csv.reader(open('getData/coauthor.csv','r'))
     co_auther_ids = []
@@ -95,7 +99,7 @@ def read_file_build(name_list):
             name = line.strip()
             print name
             profile = get_info(name, ID_KEY)
-            if profile[INTEREST_KEY]:
+            if profile.get(INTEREST_KEY) and profile[INTEREST_KEY]:
                 addDoc(writer, profile)
     writer.commit()
 
