@@ -7,6 +7,7 @@ def myShingle(aString):
 #output: univof ofmichigan
 	result = ""
 	if(aString):
+		aString = aString.replace("\n","")
 		wordList = aString.replace(",","").split(" ")
 		for i in range(0,len(wordList)-1):
 			result += wordList[i] + wordList[i+1]
