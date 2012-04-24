@@ -5,7 +5,7 @@ from customized_analyzer import BiGramShingleAnalyzer
 import re
 
 old_indexDir = "Tmp/affiliation.index-dir"
-new_indexDir = "Tmp/preprocess_aff.index-dir"
+new_indexDir = "Tmp/preprocess_aff.index-dir.test"
 shingle_pattern = r'\((.+?),.*?\)'
     
 def copy_index(old_index_dir, new_index_dir):
@@ -20,25 +20,8 @@ def copy_index(old_index_dir, new_index_dir):
         affiliation = doc.get('affiliation')
         print 'processing affiliation,', affiliation
 
-        shingle_list = []
+        shingle_list = rebuild_affiliation(affiliation)
 
-        #get bi gram shingles with tokenStream
-        shingles = BiGramShingleAnalyzer().tokenStream('f',
-                StringReader(affiliation))
-
-        #loop through the shingles
-        while shingles.incrementToken():
-            shingle = shingles.toString()
-            """
-            use regex to get the text in shingle 
-            in this format 'term1 term2'
-            """
-            result = re.match(shingle_pattern, shingle)
-            if result:
-                #if matched, combine tow terms in the shingle to one term
-                #then append it to the shingle_list
-                print 'shingle is', "".join(result.group(1).split())
-                shingle_list.append("".join(result.group(1).split()))
         #add new field to the doc
         print 'shingle list is', shingle_list
         doc.add(Field('processed_aff', ' '.join(shingle_list),
@@ -47,6 +30,26 @@ def copy_index(old_index_dir, new_index_dir):
         writer.addDocument(doc)
     writer.commit()
 
+def rebuild_affiliation(affiliation):
+    shingle_list = []
+    #get bi gram shingles with tokenStream
+    shingles = BiGramShingleAnalyzer().tokenStream('f',
+            StringReader(affiliation))
+
+    #loop through the shingles
+    while shingles.incrementToken():
+        shingle = shingles.toString()
+        """
+        use regex to get the text in shingle 
+        in this format 'term1 term2'
+        """
+        result = re.match(shingle_pattern, shingle)
+        if result:
+            #if matched, combine tow terms in the shingle to one term
+            #then append it to the shingle_list
+            print 'shingle is', "".join(result.group(1).split())
+            shingle_list.append("".join(result.group(1).split()))
+    return shingle_list
 
 def initializeIndex(dir_name):
 #returns an IndexWriter to build an index
