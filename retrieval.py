@@ -55,7 +55,7 @@ def search_by_student(student, analyzer, searcher,fieldList):
     for hit in hits.scoreDocs:
         write_to_file(str(hit.score))
         doc = searcher.doc(hit.doc)
-        write_to_file(doc.get("name"),doc.get("interest"),doc.get("affiliation"))
+        write_to_file(doc.get("interest"))
         write_to_file('...................','...................')
         explain_score(searcher, hit.doc,query)
 
