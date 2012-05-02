@@ -1,0 +1,23 @@
+<!DOCTYPE html/>
+<html>
+    <head>
+        <title>KDD 2012 Matching System</title>
+    </head>
+    <body>
+        <div id="layout" style="margin:0 auto;width:500px">
+            <h1>KDD 2012 Mathcing System</h1>
+            <div id="student_info" >
+                <form name="student_detail" action="match" method="post">
+                    {% csrf_token %}
+                    <p><span>Student Name:</span><input type="text"
+                        name="student_name" /></p>
+                    <p><span>Interests:</span><input type="text"
+                        name="student_interest" /></p>
+                    <p><span>Affiliation:</span><input type="text"
+                        name="student_affiliation" /></p>
+                    <p><input type="submit" value="Get Matches"/></p>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

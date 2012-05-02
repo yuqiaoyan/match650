@@ -1,0 +1,24 @@
+<!DOCTYPE html/>
+<html>
+    <head>
+        <title>KDD 2012 Matching System</title>
+    </head>
+    <body>
+        <div id="layout" style="margin:0 auto;width:800px">
+            <h1>KDD 2012 Matching System</h1>
+            <div id="student_info" >
+                
+                <p>For student {{ student.name }} with interest in {{ student.interest }} from {{ student.affiliation }}, we found:</p>
+                
+                {% for prof in prof_list %}
+                    <div class="prof_list">
+                        <p>Name: {{ prof.name }}</p>
+                        <p>Interest: {{ prof.interest }}</p>
+                        <p>Affliation: {{ prof.affiliation }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>
+
