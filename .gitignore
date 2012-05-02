@@ -9,6 +9,7 @@
 #vim temp file#
 ###############
 *.py.swp
+.*.swp
 
 #Index Tmp DIR#
 Tmp
