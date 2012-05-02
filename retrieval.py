@@ -79,11 +79,11 @@ if __name__ == "__main__":
             student_profile = {}
             student_profile['name'] = line[0]
             student_profile['interest'] = line[1]
-            student_profile['affiliationRaw'] = line[2]
+            student_profile['affiliation'] = line[2]
             student_profile['processed_aff'] = " ".join(rebuild_affiliation(line[2]))
             write_to_file('SEARCHING '+student_profile['name'])
             write_to_file('INTERESTS ARE '+student_profile['interest'])
-            write_to_file('AFFILIATION IS '+student_profile['affiliationRaw'])
+            write_to_file('AFFILIATION IS '+student_profile['affiliation'])
             write_to_file('.......')
             write_to_file('RESULT IS:')
             search_by_student(student_profile, analyzer, searcher,fieldList)
