@@ -63,10 +63,10 @@ class matcher:
 		#profList is a list of professor results
 		profList = []
 
-		profDict = {}
 
 		for hit in hits.scoreDocs:
 			doc = self.searcher.doc(hit.doc)
+			profDict = {}
 			profDict["name"] = doc.get("name")
 			profDict["interest"] = doc.get("interest")
 			profDict["affiliation"]=doc.get("affiliation")
