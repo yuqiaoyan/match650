@@ -63,8 +63,14 @@ class matcher:
 		#profList is a list of professor results
 		profList = []
 
+		profDict = {}
+
 		for hit in hits.scoreDocs:
-			profList.append(self.searcher.doc(hit.doc))
+			doc = self.searcher.doc(hit.doc)
+			profDict["name"] = doc.get("name")
+			profDict["interest"] = doc.get("interest")
+			profDict["affiliation"]=doc.get("affiliation")
+			profList.append(profDict)
 		
 		#save the most recent list of results	
 		self.recentResult = profList
