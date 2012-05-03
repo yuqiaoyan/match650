@@ -17,7 +17,6 @@ def getQueryList(student,fieldList):
 class matcher:
 #matcher will return professor results for a given student
 	def __init__(self,index_dir="Tmp/preprocess_aff.index-dir"):
-		initVM()
 		self.dirPath = index_dir
 		self.dir = SimpleFSDirectory(File(self.dirPath))
 		self.analyzer = StandardAnalyzer(Version.LUCENE_35)
@@ -70,8 +69,9 @@ class matcher:
 		#save the most recent list of results	
 		self.recentResult = profList
 
-		return profList
+		print "We found" + str(len(profList)) + "results"
 
+		return profList
 
 	def __str__(self):
 		return 'Matcher Class \n[Index Directory: %s]' % (self.dirPath)
