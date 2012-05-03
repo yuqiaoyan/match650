@@ -28,15 +28,16 @@ def match(request):
         request.session['prof_list'] = prof_list
         request.session['student'] = student
         for prof in prof_list:
+            print prof['name']
             aff_count = prof['affiliation'].count(student['affiliation'])
             prof['co_count'] = aff_count
         student = request.session.get('student')
         print 'in match', student, prof_list[0].get('name')
-        return render_to_response('results.html',
-                {'prof_list':prof_list, 'student':student})
+        return render_to_response('results.html', {'prof_list':prof_list, 'student':student})
         #return HttpResponseRedirect(reverse('kdd_matcher.views.results'))
 
 def results(request):
+    print request
     student = request.session.get('student')
     prof_list = request.session.get('prof_list')
     print 'student:',student
