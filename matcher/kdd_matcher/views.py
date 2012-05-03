@@ -39,6 +39,11 @@ def get_prof(student):
                 'name':'prof a',
                 'interest':'data mining', 
                 'affiliation':'U of M',
+            },
+            {
+                'name':'prof b',
+                'interest':'data mining', 
+                'affiliation':'U of M',
             }
             ]
 
