@@ -39,6 +39,7 @@ def rebuild_affiliation(affiliation):
     #loop through the shingles
     while shingles.incrementToken():
         shingle = shingles.toString()
+        print shingle
         """
         use regex to get the text in shingle 
         in this format 'term1 term2'
