@@ -1,5 +1,3 @@
-# Django settings for matcher project.
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 

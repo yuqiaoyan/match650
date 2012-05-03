@@ -16,7 +16,7 @@
                     <div class="prof_list" style="border-top:1px solid black">
                         <p>Name: {{ prof.name }}</p>
                         <p>Interest: {{ prof.interest }}</p>
-                        <p>Affliation: {{ prof.affiliation }}</p>
+                        <p>{{ prof.name }} has worked with <strong> {{ prof.co_count }} </strong> professors from <strong> {{student.affiliation}}</strong></p>
                     </div>
                 {% endfor %}
             </div>
