@@ -1,12 +1,13 @@
 from lucene import *
 from processString import *
+import os
 import re
 import string
 
 scorePattern = re.compile("^[0-9]+[.][0-9]+")
 fieldScorePattern = re.compile(r'\n\s\s[0-9]+[.][0-9]+') 
 fieldMatchPattern = re.compile(r'[a-z_]+:[a-z]+') 
-
+default_index_dir = os.path.join(os.path.abspath(os.path.join(os.path.abspath(__file__), os.path.pardir)),'Tmp/preprocess_aff.index-dir') 
 
 def isOneWord(aString):
 #returns true if aString has only one word
@@ -66,7 +67,7 @@ def getQueryList(student,fieldList):
 
 class matcher:
 #matcher will return professor results for a given student
-	def __init__(self,index_dir="Tmp/preprocess_aff.index-dir"):
+	def __init__(self,index_dir=default_index_dir):
 		self.dirPath = index_dir
 		self.dir = SimpleFSDirectory(File(self.dirPath))
 		self.analyzer = StandardAnalyzer(Version.LUCENE_35)
