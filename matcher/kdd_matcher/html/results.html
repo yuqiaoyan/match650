@@ -17,7 +17,7 @@
                         <p>Name: {{ prof.name }}</p>
                         <p>Interest: {{ prof.interest }}</p>
                         {% if prof.co_count > 0%}
-                        <p>{{ prof.name }} has coauthored with <strong>{{ prof.co_count }}</strong> professor{{ prof.co_count|pluralize }} from <strong> {{student.affiliation}}</strong></p>
+                        <p>{{ prof.name }} has coauthored with <strong>{{ prof.co_count }}</strong> co-author{{ prof.co_count|pluralize }} from <strong> {{student.affiliation}}</strong></p>
                         {% endif %}
                     </div>
                 {% endfor %}

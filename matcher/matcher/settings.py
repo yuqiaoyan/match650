@@ -1,3 +1,4 @@
+import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -106,11 +107,13 @@ ROOT_URLCONF = 'matcher.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'matcher.wsgi.application'
 
+tem_path = os.path.join(os.path.abspath(os.path.join(os.path.abspath(__file__), os.path.pardir, os.path.pardir)), 'kdd_matcher/html')
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/Users/kewu/match650/matcher/kdd_matcher/html"
+    tem_path
 )
 
 INSTALLED_APPS = (
