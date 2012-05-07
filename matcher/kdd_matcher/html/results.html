@@ -16,7 +16,9 @@
                     <div class="prof_list" style="border-top:1px solid black">
                         <p>Name: {{ prof.name }}</p>
                         <p>Interest: {{ prof.interest }}</p>
-                        <p>{{ prof.name }} has worked with <strong> {{ prof.co_count }} </strong> professors from <strong> {{student.affiliation}}</strong></p>
+                        {% if prof.co_count > 0%}
+                        <p>{{ prof.name }} has coauthored with <strong>{{ prof.co_count }}</strong> professor{{ prof.co_count|pluralize }} from <strong> {{student.affiliation}}</strong></p>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
