@@ -10,7 +10,7 @@
             <div id="student_info" >
                 <p>For student <strong>{{ student.name }}</strong> with interest in 
                 {{ student.interest }} from {{ student.affiliation }}, we
-                found {{ prof_list|length }} match{{ prof_list|length|pluralize }}:</p>
+                found {{ prof_list|length }} matches:</p>
                 
                 {% for prof in prof_list %}
                     <div class="prof_list" style="border-top:1px solid black">
@@ -22,6 +22,7 @@
                     </div>
                 {% endfor %}
             </div>
+            <a href={% url kdd_matcher.views.index %}>Start a new match</a>
         </div>
     </body>
 </html>
