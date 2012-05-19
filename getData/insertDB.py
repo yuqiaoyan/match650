@@ -25,5 +25,5 @@ def insertProf(profDict,cur):
 	cur.execute(\
 		"INSERT INTO professor\
 		SET	phone = %s,\
-			email = %s;",\
+			email = %s",\
 		(profDict["phone"],profDict["email"]))	
