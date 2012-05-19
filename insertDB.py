@@ -1,4 +1,4 @@
-import MySQL as mdb
+import MySQLdb as mdb
 import sys
 
 try:
