@@ -12,7 +12,7 @@ def connectDB():
 	try:
 		con = mdb.connect(host,user,pwd,db)
 		cur = con.cursor()
-		return cur
+		return con,cur
 
 	except mdb.Error, e:
 		print "Error %d: %s" % (e.args[0],e.args[1])
