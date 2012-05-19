@@ -4,7 +4,7 @@ import re
 import string
 
 scorePattern = re.compile("^[0-9]+[.][0-9]+")
-fieldScorePattern = re.compile(r'\n\s\s[0-9]+[.][0-9]+') 
+#fieldScorePattern = re.compile(r'\n\s\s[0-9]+[.][0-9]+') 
 fieldMatchPattern = re.compile(r'[a-z_]+:[a-z]+') 
 
 
@@ -12,16 +12,17 @@ def isOneWord(aString):
 #returns true if aString has only one word
 	return(len(aString.split(" "))==1)
 
-def getFieldExplainList(explain):
-#for each field a student matches the professor
-#get the field score, field matched items, and field name in a list
+def getFieldExplainList(explain,fieldList):
+#for each field a student matches the professor from the explain test
+#get the field matched items, and field name in a list
+#return a LIST of dictionary by keys: name and matchedItems of strings
 
 	#get the subscore, and matched items for each field as a list
-	fieldScoreList = fieldScorePattern.findall(explain)
+	#fieldScoreList = fieldScorePattern.findall(explain)
 	fieldMatchList = fieldMatchPattern.findall(explain)
 	index = -1
 	currField = ""
-	fieldExplainList = [{} for i in range(0,len(fieldScoreList))]
+	fieldExplainList = [{} for i in range(0,len(fieldList))]
 
 	#if we found matched items for at least one field
 	if(len(fieldMatchList) > 0):
@@ -30,13 +31,16 @@ def getFieldExplainList(explain):
 			if(currField != fieldName):
 				index += 1
 				currField = fieldName
-				fieldExplainList[index]['score'] = fieldScoreList[index][4:]
+				#fieldExplainList[index]['score'] = fieldScoreList[index][3:]
 			try:
 				fieldExplainList[index]['name']=fieldName
 				if 'matchedItems' in fieldExplainList[index]:
 					if string.find(fieldExplainList[index]['matchedItems'],match) >= 0:
 						continue
-				fieldExplainList[index]['matchedItems'] = fieldExplainList[index].setdefault('matchedItems',"")+match
+				try:
+					fieldExplainList[index]['matchedItems']+= ", " + match
+				except:
+					fieldExplainList[index]['matchedItems'] = match
 			except:
 				raise
 				#print "index is", index
@@ -73,6 +77,7 @@ class matcher:
 		self.searcher = IndexSearcher(self.dir)
 		self.recentResult = []
 		self.recentQuery = None
+		self.fieldList = None
 
 	def explainPos(self,pos):
 	#requires a position that's one or greater and less than the recentResult
@@ -93,7 +98,7 @@ class matcher:
 			#get summary data on each field as a list
 				score = getScore(explainString)
 				print "score is ",score
-				fieldExplainList = getFieldExplainList(explainString)
+				fieldExplainList = getFieldExplainList(explainString,self.fieldList)
 				print "field summary is ", fieldExplainList
 			return score,fieldExplainList
 
@@ -143,9 +148,9 @@ class matcher:
 	#student_profile is a dictionary with keys:
 	#name, interest, affiliation 
 
-		fieldList = self.validateArguments(student,fieldList)
+		self.fieldList = self.validateArguments(student,fieldList)
 
-		query = self.getQuery(student,fieldList)
+		query = self.getQuery(student,self.fieldList)
 		self.recentQuery = query		
 
 		#get results from Index
