@@ -10,16 +10,19 @@
             <div id="student_info" >
                 <p>For student <strong>{{ student.name }}</strong> with interest in 
                 {{ student.interest }} from {{ student.affiliation }}, we
-                found {{ prof_list|length }} match{{ prof_list|length|pluralize }}:</p>
+                found {{ prof_list|length }} matches:</p>
                 
                 {% for prof in prof_list %}
                     <div class="prof_list" style="border-top:1px solid black">
                         <p>Name: {{ prof.name }}</p>
                         <p>Interest: {{ prof.interest }}</p>
-                        <p>{{ prof.name }} has worked with <strong> {{ prof.co_count }} </strong> professors from <strong> {{student.affiliation}}</strong></p>
+                        {% if prof.co_count > 0%}
+                        <p>{{ prof.name }} has coauthored with <strong>{{ prof.co_count }}</strong> co-author{{ prof.co_count|pluralize }} from <strong> {{student.affiliation}}</strong></p>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
+            <a href={% url kdd_matcher.views.index %}>Start a new match</a>
         </div>
     </body>
 </html>
