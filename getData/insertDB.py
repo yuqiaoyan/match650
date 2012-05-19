@@ -21,9 +21,26 @@ def connectDB():
 	#	if con:
 	#		con.close()
 
-def insertProf(profDict,cur):
+def insertProf(profDict,cur,con):
+#profDict must have all fields for the insert 
 	cur.execute(\
 		"INSERT INTO professor\
 		SET	phone = %s,\
-			email = %s",\
-		(profDict["phone"],profDict["email"]))	
+			email = %s,\
+			homepage = %s,\
+			position = %s,\
+			affiliation = %s,\
+			address = %s,\
+			phduniv = %s,\
+			phdmajor = %s,\
+			bsuniv = %s,\
+			bio = %s,\
+			pictureURL = %s,\
+			coauthorID = %s,\
+			interest = %s" % 
+		(profDict["phone"],profDict["email"],profDict["homepage"],\
+		profDict["position"],profDict["affiliation"],profDict["address"],\
+		profDict["phduniv"],profDict["phdmajor"],profDict["bsuniv"],\
+		profDict["bio"],profDict["pictureURL"],profDict["coauthorID"],\
+		profDict["interest"]))
+	con.commit()	
