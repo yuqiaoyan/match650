@@ -24,6 +24,6 @@ def connectDB():
 def insertProf(profDict,cur):
 	cur.execute(\
 		"INSERT INTO professor\
-		SET	phone = %s\
-			email = %s",\
+		SET	phone = %s,\
+			email = %s;",\
 		(profDict["phone"],profDict["email"]))	
