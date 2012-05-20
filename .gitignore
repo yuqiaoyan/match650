@@ -1,6 +1,6 @@
 #CSV datafile#
 ##############
-*.csv
+#*.csv
 
 #Python compile file#
 #####################
