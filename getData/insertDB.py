@@ -1,6 +1,10 @@
+import re
 import MySQLdb as mdb
 import sys
 from build_indexing import *
+
+#PATTERNS#
+interestPat = re.compile("[a-zA-Z]+",re.IGNORECASE)
 
 #CONFIGURATIONS#
 host	= 'localhost'
@@ -26,27 +30,31 @@ def connectDB():
 
 def insertProf(profDict,cur,con):
 #profDict must have all fields for the insert 
-	cur.execute(\
-		"INSERT INTO professor\
-		SET	phone = %s,\
-			email = %s,\
-			homepage = %s,\
-			position = %s,\
-			affiliation = %s,\
-			address = %s,\
-			phduniv = %s,\
-			phdmajor = %s,\
-			bsuniv = %s,\
-			bio = %s,\
-			pictureURL = %s,\
-			coauthorID = %s,\
-			interest = %s,\
-			arnetID = %s",  
-		(profDict["Phone"],profDict["Email"],profDict["Homepage"],\
-		profDict["Position"],profDict["Affiliation"],profDict["Address"],\
-		profDict["Phduniv"],profDict["Phdmajor"],profDict["Bsuniv"],\
-		profDict["Bio"],profDict["PictureURL"],profDict["CoauthorID"],\
-		profDict["Interest"],profDict["Id"]))
+	try:
+		cur.execute(\
+			"INSERT INTO professor\
+			SET	phone = %s,\
+				email = %s,\
+				homepage = %s,\
+				position = %s,\
+				affiliation = %s,\
+				address = %s,\
+				phduniv = %s,\
+				phdmajor = %s,\
+				bsuniv = %s,\
+				bio = %s,\
+				pictureURL = %s,\
+				coauthorID = %s,\
+				interest = %s,\
+				arnetID = %s,\
+				name = %s",  \
+			(profDict["Phone"],profDict["Email"],profDict["Homepage"],\
+			profDict["Position"],profDict["Affiliation"],profDict["Address"],\
+			profDict["Phduniv"],profDict["Phdmajor"],profDict["Bsuniv"],\
+			profDict["Bio"],profDict["PictureURL"],profDict["CoauthorID"],\
+			profDict["Interest"],profDict["Id"],profDict["Name"]))
+	except:		
+		print "professor is ", profDict
 	con.commit()	
 
 def rawDictToProfDict(rawDict):
@@ -62,6 +70,14 @@ def parseJSONLine(text):
 	data = json.loads(text)
 	return(data[0])
 
+def isValidInterest(text):
+#returns true if the text contains at least 1 char a-zA-Z
+	if not text:
+		return False
+	if(len(interestPat.findall(text)) > 0):
+		return True
+	return False
+ 
 def getInsertData():
 #main function to get professor data
 #and insert into the database
@@ -69,25 +85,22 @@ def getInsertData():
 	con, cur = connectDB()
 
 	file = open("committees")
-	i = 0
 	for line in file:
-		if(i > 2):
-			break
-		i+=1
 		rawDict = parseJSONLine(line)		
 		#ToDo: grab interest data
 		rawDict["Interest"] = get_interest_by_id(str(rawDict["Id"]))
-		print "interest is",rawDict["Interest"]
-#ToDo: check that interest data exists
-#ToDo: if interest data, does not exist, then do not add to DB
-# else 
-#ToDo: grab coauthor data
+	
+		#if Interest is not valid, do not add to DB
+		if not isValidInterest(rawDict["Interest"]): continue
+		#get coauthorIDs as string
+		rawDict["CoauthorID"]= get_coAuthorIds_by_id(str(rawDict["Id"]))
+
 		#convert dict to a well formed dictionary
 		#all keys in profKeys must exist in dict
 		profDict = rawDictToProfDict(rawDict)
 
 		#add professor to DB
-		#insertProf(profDict,cur,con)
+		insertProf(profDict,cur,con)
 
 	file.close()
 		
