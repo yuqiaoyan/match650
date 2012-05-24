@@ -17,7 +17,7 @@ profKeys= ["Phone","Email","Homepage","Position","Affiliation","Address","Phduni
 def connectDB():
 #returns a cursor object to our database
 	try:
-		con = mdb.connect(host,user,pwd,db)
+		con = mdb.connect(host,user,pwd,db,use_unicode=True,charset = "utf8")
 		cur = con.cursor()
 		return con,cur
 
@@ -53,7 +53,9 @@ def insertProf(profDict,cur,con):
 			profDict["Phduniv"],profDict["Phdmajor"],profDict["Bsuniv"],\
 			profDict["Bio"],profDict["PictureURL"],profDict["CoauthorID"],\
 			profDict["Interest"],profDict["Id"],profDict["Name"]))
-	except:		
+	except Exception as err:
+		print type(err)
+		print(err.args)
 		print "professor is ", profDict
 	con.commit()	
 
