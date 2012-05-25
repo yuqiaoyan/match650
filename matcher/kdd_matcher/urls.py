@@ -6,6 +6,9 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('kdd_matcher.views',
     url(r'^$','index', name='index'),
+    url(r'^studentE$','studentE'),
+    url(r'^explain$','explain'),
+    url(r'^matchE$','matchE'),
     url(r'^match$','match'),
     #url(r'^(?P<affiliation>.+)/(?P<name>.+)/(?P<interest>.+)/results/$','results'),
     url(r'^results/$','results'),

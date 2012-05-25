@@ -9,6 +9,46 @@ def index(request):
     return render_to_response('index.html',
             context_instance=RequestContext(request))
 
+def studentE(request):
+    return render_to_response('studentE.html',
+            context_instance=RequestContext(request))
+
+def explain(request):
+    student = request.session.get('student')
+    info_list = request.session.get('info_list')
+    return render_to_response('explain.html',
+            {'student':student,'info_list':info_list})
+
+def matchE(request):
+    lucene.getVMEnv().attachCurrentThread()
+    try:
+        student = {}
+        student['name'] = request.POST['student_name']
+        student['interest'] = \
+            request.POST['student_interest']
+        student['affiliation'] = \
+            request.POST['student_affiliation']
+    except KeyError:
+        return render_to_response('index.html',
+                {'error_msg':'missing field'},
+                context_instance=RequestContext(request))
+    else:
+        prof_matcher = matcher()
+        prof_list = prof_matcher.getProfMatch(student)
+        request.session['prof_list'] = prof_list
+        request.session['student'] = student
+	info_list = []
+	for i,prof in enumerate(prof_list):
+        	score,explainList = prof_matcher.explainPos(i+1)
+		info_list.append((prof,score,explainList))
+	for prof in prof_list:
+            print prof['name']
+            aff_count = prof['affiliation'].count(student['affiliation'])
+            prof['co_count'] = aff_count
+        student = request.session.get('student')
+        print 'in match', student, prof_list[0].get('name')
+        return render_to_response('explain.html', {'info_list':info_list,'student':student})
+        #return HttpResponseRedirect(reverse('kdd_matcher.views.results'))
 def match(request):
     lucene.getVMEnv().attachCurrentThread()
     try:
