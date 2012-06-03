@@ -133,7 +133,7 @@ class matcher:
 				#Lucene requires a Map class,copy boosts as a boostMap
 				boostMap = HashMap()
 				for key in boosts.keys():
-						print "%s boost is: %s" % key,boosts[key]
+						print "%s boost is: %s" % (key,boosts[key])
 						boostMap.put(key,boosts[key])
 			
 				query = MultiFieldQueryParser(Version.LUCENE_35,fieldList,self.analyzer,boostMap).parse(Version.LUCENE_35,queryList,fieldList,self.analyzer)
