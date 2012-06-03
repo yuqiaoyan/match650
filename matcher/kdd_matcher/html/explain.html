@@ -1,0 +1,51 @@
+<!DOCTYPE html/>
+<html>
+	<head>
+		<title> Match Explanations </title>
+	</head>
+	<body>
+		<h1> Explanation </h1>
+		<div id="student_info">
+			<h3> Student Info </h3>
+			<table border="0">
+			<tr>
+			<td>
+			<p>Name:</p>
+			<p>Interest:</p>
+			<p>Affiliation: </p>
+			</td>
+			<td>
+			<p> {{student.name}}</p>
+			<p>  {{student.interest}}</p>
+			<p>{{student.affiliation}}</p>
+			</td>
+			</table>
+		</div>
+		<div style="margin-top: 100px">
+			<h3> Professor Matches </h3>
+			<table border="1">
+			<tr>
+			<td>Rank</td>
+			<td>Prof Name</td>
+			<td>Score</td>
+			<td>Interests</td>
+			<td>Matched Items</td>
+			</tr>
+			{% for prof,score,explain_list in info_list %}
+			<tr>
+			<td>{{ forloop.counter }}</td>
+			<td>{{prof.name}}</td>
+			<td>{{score}}</td>
+			<td>{{prof.interest}}</td>
+			<td>{% for explainDict in explain_list %}
+			{% if explainDict.matchedItems != "" %} 
+			<strong>{{explainDict.name}}</strong>:{{explainDict.matchedItems}} {% endif %} {% endfor %}</td>
+			</tr>
+			
+			{% endfor %}
+			</table>
+
+			
+		</div>
+	</body>
+</html>
