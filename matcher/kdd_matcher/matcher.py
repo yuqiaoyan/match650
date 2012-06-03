@@ -130,10 +130,10 @@ class matcher:
 		print fieldList,queryList
 
 		if boosts:
-				print "we are boosting"
 				#Lucene requires a Map class,copy boosts as a boostMap
 				boostMap = HashMap()
 				for key in boosts.keys():
+						print "%s boost is: %s" % key,boosts[key]
 						boostMap.put(key,boosts[key])
 			
 				query = MultiFieldQueryParser(Version.LUCENE_35,fieldList,self.analyzer,boostMap).parse(Version.LUCENE_35,queryList,fieldList,self.analyzer)
@@ -184,7 +184,7 @@ class matcher:
 		
 		return False
 
-	def getProfMatch(self,student, numResults = 3, fieldList = ["interest","processed_aff"],boosts={'interest':1.45,'processed_aff':1.0}):
+	def getProfMatch(self,student, numResults = 3, fieldList = ["interest","processed_aff"],boosts={'interest':1.50,'processed_aff':1.0}):
 	#student_profile is a dictionary with keys:
 	#name, interest, affiliation 
 	#boost must be a dictionary where the key is the interest and the boost is the value
