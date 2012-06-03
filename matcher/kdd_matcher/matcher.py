@@ -137,8 +137,8 @@ class matcher:
 						boostMap.put(key,boosts[key])
 			
 				query = MultiFieldQueryParser(Version.LUCENE_35,fieldList,self.analyzer,boostMap).parse(Version.LUCENE_35,queryList,fieldList,self.analyzer)
-		else:
-				query = MultiFieldQueryParser(Version.LUCENE_35,fieldList,self.analyzer).parse(Version.LUCENE_35,queryList,fieldList,self.analyzer)
+		#else:
+		#		query = MultiFieldQueryParser(Version.LUCENE_35,fieldList,self.analyzer).parse(Version.LUCENE_35,queryList,fieldList,self.analyzer)
 
 		return query
 
@@ -168,9 +168,9 @@ class matcher:
 	#student must have an interest field, processed_aff must be a bigram
 	#return true if boost has the same fields as fieldList and they are all floats
 		assert len(student["interest"].strip()) > 1, "Student must have an interest"		
-		assert len(boosts.keys()) == len(fieldList),"fieldList and boost must have the same keys" 
 		
 		if boosts:
+				assert len(boosts.keys()) == len(fieldList),"fieldList and boost must have the same keys" 
 				try:
 						for field in fieldList:
 								#all values in boost must be a float
@@ -184,7 +184,7 @@ class matcher:
 		
 		return False
 
-	def getProfMatch(self,student, numResults = 3, fieldList = ["interest","processed_aff"],boosts={'interest':1.50,'processed_aff':1.0}):
+	def getProfMatch(self,student, numResults = 3, fieldList = ["interest","processed_aff"],boosts={'interest':5.0,'processed_aff':1.0}):
 	#student_profile is a dictionary with keys:
 	#name, interest, affiliation 
 	#boost must be a dictionary where the key is the interest and the boost is the value
