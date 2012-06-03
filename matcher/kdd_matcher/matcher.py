@@ -130,6 +130,7 @@ class matcher:
 		print fieldList,queryList
 
 		if boosts:
+				print "we are boosting"
 				#Lucene requires a Map class,copy boosts as a boostMap
 				boostMap = HashMap()
 				for key in boosts.keys():
