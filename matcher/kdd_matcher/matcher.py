@@ -127,13 +127,13 @@ class matcher:
 		if("processed_aff" in fieldList):
 			student["processed_aff"] = shingleQuery(student["affiliation"],2)
 		queryList = getQueryList(student,fieldList)
-		print fieldList,queryList
+		#print fieldList,queryList
 
 		if boosts:
 				#Lucene requires a Map class,copy boosts as a boostMap
 				boostMap = HashMap()
 				for key in boosts.keys():
-						print "%s boost is: %s" % (key,boosts[key])
+						#print "%s boost is: %s" % (key,boosts[key])
 						boostMap.put(key,boosts[key])
 			
 				query = MultiFieldQueryParser(Version.LUCENE_35,fieldList,self.analyzer,boostMap).parse(Version.LUCENE_35,queryList,fieldList,self.analyzer)
@@ -161,7 +161,7 @@ class matcher:
 				fieldList.append("affiliation")
 				boosts['affiliation']=1.0
 
-			print "fieldList is", fieldList
+			#print "fieldList is", fieldList
 		return fieldList,boosts
 
 	def validateArguments(self,student,fieldList,boosts):
@@ -217,7 +217,7 @@ class matcher:
 		#save the most recent list of results	
 		self.recentResult = profList
 
-		print "We found" + str(len(profList)) + "results"
+		#print "We found" + str(len(profList)) + "results"
 
 		return profList
 

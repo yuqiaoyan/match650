@@ -33,6 +33,16 @@ class Professor(models.Model):
     interest = models.CharField(max_length=1500)
     arnetid = models.IntegerField(null=True, db_column='arnetID', blank=True) # Field name made lowercase.
     name = models.CharField(max_length=600)
+
+    def get_co_num(self, aff):
+        coauthor_ids = [arnetid for arnetid in self.coauthorid.split(' ') 
+                        if arnetid != '']
+        co_list = Professor.objects.filter(arnetid__in=coauthor_ids,
+                                        affiliation__icontains=aff)
+        self.co_count = len(co_list)
+        self.co_list = co_list
+
+
     class Meta:
         db_table = u'professor'
 

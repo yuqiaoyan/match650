@@ -1,32 +1,106 @@
-<!DOCTYPE html/>
-<html>
-    <head>
-        <title>KDD 2012 Matching System</title>
-        <style type="text/css">
-            span.item_title{
-                width:180px;
-                text-align:right;
-                float:left;
-                margin-right:8px;
-            }
-            
-        </style>
-    </head>
-    <body>
-        <div id="layout" style="margin:0 auto;width:500px">
-            <h1>KDD 2012 Matching System</h1>
-            <div id="student_info" >
-                <form name="student_detail" action="match" method="post">
-                    {% csrf_token %}
-                    <p><span class="item_title">Student Name:</span><input type="text"
-                        name="student_name" /></p>
-                    <p><span class="item_title">Interests:</span><input type="text"
-                        name="student_interest" /></p>
-                    <p><span class="item_title">Affiliation:</span><input type="text"
-                        name="student_affiliation" /></p>
-                    <p style="text-align:center"><input type="submit" value="Get Matches"/></p>
-                </form>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>KDD 2012 Matching System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KDD 2012 Matching System">
+    <meta name="author" content="Yi Zhou">
+    
+    <!-- Style Sheets -->
+    <link href="{{ STATIC_URL }}frameworks/custom/projects/kdd-2012/kdd-2012-full.css" rel="stylesheet">
+    
+    <!-- IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-19663193-1']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Banner -->
+      <section id="banner">
+        <a href="{% url kdd_matcher:index %}"><img src="{{ STATIC_URL }}/images/kdd-2012/banner.jpg" alt="KDD 2012 Matching System" /></a>
+      </section>
+      <!-- Main Content -->
+      <section id="kdd-2012">
+        <div class="hero-unit">
+          <blockquote class="instructions">
+            <p>KDD 2012 Matching System is an intelligent matching system that matches you with potential experts from KDD sharing the same interest and/or affiliation. To get started, please provide your profile data to get started!</p><br />
+            <small>KDD 2012 Matching System</small>
+          </blockquote>
         </div>
-    </body>
+        <div class="row">
+          <div class="span12">
+            <form class="form-horizontal" name="student_detail"
+                action="match" method="post">
+              {% csrf_token %}
+              <div class="row">
+                <!-- Left side -->
+                <div class="span5 offset1">
+                  <fieldset>
+                    <div class="control-group">
+                      <label class="control-label" for="input01">Name</label>
+                      <div class="controls">
+                        <input name="student_name" type="text" class="input-xlarge" id="name" placeholder="Hello, my name is ______">
+                      </div>
+                      <br />
+                      <label class="control-label" for="input01">Interest</label>
+                      <div class="controls">
+                        <input name="student_interest" type="text" class="input-xlarge" id="interest" placeholder="(e.g., Information Retrieval, HCI)">
+                      </div>
+                      <br />
+                      <label class="control-label" for="affliation">University / Work Affiliation</label>
+                      <div class="controls">
+                        <input name="student_affiliation" type="text" class="input-xlarge" id="affliation" placeholder="(e.g., University of Michigan, Baidu)">
+                      </div>
+                      <br />
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="span5 offset1">
+                  <button type="submit" class="btn btn-primary btn-large match-me">Match Me!</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section><!-- section -->
+      <footer class="footer">
+        <p class="pull-right">
+          <a href="#">Top</a>
+        </p>
+        <p>&copy; 2012 <a href="//www.zhoufolio.com">Zhoufolio</a></p>
+      </footer>
+    </div> <!-- /container -->
+    <!-- Javascript -->
+    <script src="{{ STATIC_URL }}frameworks/jquery-1.7.2.min.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-transition.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-alert.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-tab.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-popover.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-button.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-typeahead.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/raty/js/jquery.raty.min.js"></script>
+    <script type="text/javascript">
+    $('#star').raty();
+    </script>
+  </body>
 </html>
