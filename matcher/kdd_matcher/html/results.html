@@ -1,29 +1,139 @@
-<!DOCTYPE html/>
-<html>
-    <head>
-        <title>KDD 2012 Matching System</title>
-        <link rel="stylesheet" href="css/results.css" type="text/css" />
-    </head>
-    <body>
-        <div id="layout" style="margin:0 auto;width:800px">
-            <h1>KDD 2012 Matching System</h1>
-            <div id="student_info" >
-                <p>For student <strong>{{ student.name }}</strong> with interest in 
-                {{ student.interest }} from {{ student.affiliation }}, we
-                found {{ prof_list|length }} matches:</p>
-                
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>KDD 2012 Matching System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KDD 2012 Matching System">
+    <meta name="author" content="Yi Zhou">
+    
+    <!-- Style Sheets -->
+    <link href="{{ STATIC_URL }}frameworks/custom/projects/kdd-2012/kdd-2012-full.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <!-- Banner -->
+      <section id="banner">
+      <a href="{% url kdd_matcher:index %}"><img src="{{  STATIC_URL  }}images/kdd-2012/banner.jpg" alt="KDD 2012 Matching System" /></a>
+      </section>
+      <!-- Main Content -->
+      <section id="kdd-2012">
+        <div class="row">
+          <div class="span12">
+            <div class="row">
+              <!-- Left side -->
+              <div class="span3">
+                <!-- User Info -->
+                <div class="well sidebar-nav">
+                  <ul class="nav nav-list">
+                    <li class="nav-header">{{ STATIC_URL }}Your Information</li>
+                  </ul>
+                  <br />
+                  <dl class="dl-horizontal">
+                    <dt>NAME</dt>
+                    <dd class="pad-bottom">{{ result.stuname }}</dd>
+                    <dt>INTERESTS</dt>
+                    <dd class="pad-bottom">{{ result.stuinterest }}</dd>
+                    <dt>AFFILIATION</dt>
+                    <dd>{{ result.stuaffiliation }}</dd>
+                  </dl>
+                </div><!-- well -->
+                <div class="sidebar-nav">
+                  <button class="btn btn-warning dropdown-toggle feedback" data-toggle="collapse" data-target="#feedback">
+                    <i class="icon-comment icon-white"></i>&nbsp;&nbsp;
+                    Submit Feedback &nbsp;&nbsp;<span class="caret"></span>
+                  </button>
+                  <div id="feedback" class="collapse">
+                    <form>
+                      <textarea class="input-xlarge" id="textarea" rows="8" placeholder="Please input your comments here"></textarea>
+                      <br />
+                        Star Rating
+                        <div id="star"></div>
+                      <br />
+                      <button type="Submit" class="btn btn-success btn-mini">Submit</button>
+                    </form>
+                  </div>
+                </div><!-- feedback -->
+              </div><!-- span3 -->
+              <!-- Right Side -->
+              <div class="span9">
+                <div class="alert alert-info">
+                  <a class="close" data-dismiss="alert" href="#">×</a>
+                  We found 3 experts who match your interests.
+                </div>
+                <!-- Entry #1 -->
                 {% for prof in prof_list %}
-                    <div class="prof_list" style="border-top:1px solid black">
-                        <p>Name: {{ prof.name }}</p>
-                        <p>Interest: {{ prof.interest }}</p>
-                        {% if prof.co_count > 0%}
-                        <p>{{ prof.name }} has coauthored with <strong>{{ prof.co_count }}</strong> co-author{{ prof.co_count|pluralize }} from <strong> {{student.affiliation}}</strong></p>
-                        {% endif %}
+                <div class="row">
+                  <div class="span2">
+                    <div class="thumbnail">
+                      {% if prof.pictureurl %}
+                      <img src="{{ prof.pictureurl }}" alt="Profile Picture Placeholder">
+                      {% else %}
+                      <img src="{{ STATIC_URL }}images/kdd-2012/260x180.gif" alt="Profile Picture Placeholder">
+                      {% endif %}
                     </div>
+                  </div>
+                  <div class="span5">
+                      <h3 class="person-name">{{ prof.name }}</h3>
+                    <p class="person-information">
+                    <i class="icon-briefcase"></i>{{ prof.affiliation }}<br />
+                    <i class="icon-envelope"></i> {{ prof.email }}<br />
+                    <i class="icon-briefcase"></i> <a href="">{{ prof.homepage }}</a>
+                    </p>
+                    <br />
+                    {% if prof.co_count > 0 %}
+                    <div class="btn-group">
+                      <button class="btn dropdown-toggle span5" data-toggle="dropdown">
+                          <span class="badge badge-info">{{ prof.co_count }}</span> connections with {{ result.stuaffiliation }}
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu span5">
+                        {% for coauthor in prof.co_list %}
+                        <li><a href="{{ coauthor.homepage }}"><i
+                                class="icon-user"></i> {{ coauthor.name }}</a></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="span1 interests">
+                    <p>
+                      {{ prof.interest }}
+                    </p>
+                  </div>
+                </div><!-- row -->
+                <hr />
                 {% endfor %}
-            </div>
-            <a href={% url kdd_matcher.views.index %}>Start a new match</a>
-        </div>
-    </body>
+              </div><!-- span9 -->
+            </div><!-- row -->
+          </div><!-- span12 -->
+        </div><!-- row -->
+      </section><!-- section -->
+      <footer class="footer">
+        <p class="pull-right">
+          <a href="#">Top</a>
+        </p>
+        <p>&copy; 2012 <a href="//www.zhoufolio.com">Zhoufolio</a></p>
+      </footer>
+    </div> <!-- /container -->
+    <!-- Javascript -->
+    <script type="text/javascript">var STATIC_URL = "{{STATIC_URL}}" </script> 
+    <script src="{{ STATIC_URL }}frameworks/jquery-1.7.2.min.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-transition.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-alert.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-tab.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-popover.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-button.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-typeahead.js"></script>
+    <script src="{{ STATIC_URL }}frameworks/raty/js/jquery.raty.min.js"></script>
+    <script type="text/javascript">
+    $('#star').raty();
+    </script>
+  </body>
 </html>
-
