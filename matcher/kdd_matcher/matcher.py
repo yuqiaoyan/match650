@@ -142,6 +142,17 @@ class matcher:
 
 		return query
 
+	def getQueryBoost(self,student,fieldList,boosts):
+			booleanQ = BooleanQuery()
+
+			for field in fieldList:
+				query = QueryParser(Version.LUCENE_35,field,self.analyzer).parse(student[field])
+				query.setBoost(boosts[field])
+				booleanQ.add(query,BooleanClause.Occur.SHOULD) 
+			
+			print "booleanQ is", booleanQ
+			return booleanQ
+
 	def updateArguments(self,student,fieldList,boosts):
 	#if student has no affiliation information, then do not use affiliation in the algorithm
 	#if affiliation is only one word, then only use affiliation field to do the match
@@ -194,7 +205,7 @@ class matcher:
 		if(self.validateArguments(student,fieldList,boosts)):
 			self.fieldList,boosts = self.updateArguments(student,fieldList,boosts)
 
-		query = self.getQuery(student,self.fieldList,boosts)
+		query = self.getQueryBoost(student,self.fieldList,boosts)
 		self.recentQuery = query		
 
 		#get results from Index
