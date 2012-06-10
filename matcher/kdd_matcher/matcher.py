@@ -195,7 +195,7 @@ class matcher:
 		
 		return False
 
-	def getProfMatch(self,student, numResults = 3, fieldList = ["interest","processed_aff"],boosts={'interest':5.0,'processed_aff':1.0}):
+	def getProfMatch(self,student, numResults = 3, fieldList = ["interest","processed_aff"],boosts={'interest':1.0,'processed_aff':2.0}):
 	#student_profile is a dictionary with keys:
 	#name, interest, affiliation 
 	#boost must be a dictionary where the key is the interest and the boost is the value

@@ -7,7 +7,8 @@ from build_indexing import *
 interestPat = re.compile("[a-zA-Z]+",re.IGNORECASE)
 
 #CONFIGURATIONS#
-host	= 'http://ec2-107-20-36-41.compute-1.amazonaws.com/'
+#host	= 'http://ec2-107-20-36-41.compute-1.amazonaws.com/'
+host	= 'localhost'
 user	= 'root'
 pwd	= 'kddmatcher'
 db	= 'kdd'
