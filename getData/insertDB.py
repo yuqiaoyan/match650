@@ -51,7 +51,7 @@ def insertProf(profDict,cur,con):
 			(profDict["Phone"],profDict["Email"],profDict["Homepage"],\
 			profDict["Position"],profDict["Affiliation"],profDict["Address"],\
 			profDict["Phduniv"],profDict["Phdmajor"],profDict["Bsuniv"],\
-			profDict["Bio"],profDict["PictureURL"],profDict["CoauthorID"],\
+			profDict["Bio"],profDict["PictureUrl"],profDict["CoauthorID"],\
 			profDict["Interest"],profDict["Id"],profDict["Name"]))
 	except Exception as err:
 		print type(err)
