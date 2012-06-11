@@ -2,16 +2,19 @@ from datetime import datetime
 
 from matcher import matcher
 from models import Professor, Result, Algo
+from .forms import QueryForm, ReviewForm
 
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 import lucene
 
 def index(request):
+    form = QueryForm()
     return render_to_response('index.html',
-            context_instance=RequestContext(request))
+                            {'form': form},
+                            context_instance=RequestContext(request))
 
 def studentE(request):
     return render_to_response('studentE.html',
@@ -56,41 +59,68 @@ def matchE(request):
 
 
 def match(request):
-    lucene.getVMEnv().attachCurrentThread()
-    try:
-        student = {}
-        student['name'] = request.POST['student_name']
-        student['interest'] = \
-            request.POST['student_interest']
-        student['affiliation'] = \
-            request.POST['student_affiliation']
-        result = Result.objects.get(stuname=student['name'],
-                stuaffiliation=student['affiliation'],
-                stuinterest=student['interest'])
-    except KeyError:
-        return render_to_response('index.html',
-                {'error_msg':'missing field'},
-                context_instance=RequestContext(request))
-    except Result.DoesNotExist:
-        prof_matcher = matcher()
-        prof_result= prof_matcher.getProfMatch(student)
-        prof_list = []
-        for result in prof_result:
-            name = result['name']
-            interest = result['interest']
-            print name, interest
-            professor = Professor.objects.get(name__icontains=name.split(' ')[0],
-                    interest=interest)
-            prof_list.append(professor.id)
-        result = Result(stuinterest=student['interest'],
-                stuname=student['name'], stuaffiliation=
-                student['affiliation'], date=datetime.now(),
-                pos1id=prof_list[0], pos2id=prof_list[1],
-                pos3id=prof_list[2], algoid=Algo.objects.get(pk=1))
-        result.save()
-        #return render_to_response('results.html', {'prof_list':prof_list, 'student':student})
-    request.session['result_id'] = result.id
-    return HttpResponseRedirect(reverse('kdd_matcher:results'))
+    if request.method == "POST":
+        form = QueryForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            interest = form.cleaned_data['interest']
+            affiliation = form.cleaned_data['affiliation']
+            try:
+                result = Result.objects.get(stuname=name,
+                                            stuaffiliation=affiliation,
+                                            stuinterest=interest)
+            except Result.DoesNotExist:
+                lucene.getVMEnv().attachCurrentThread()
+                student = {}
+                student['name'] = name
+                student['interest'] =interest
+                student['affiliation'] = affiliation
+                prof_matcher = matcher()
+                prof_result= prof_matcher.getProfMatch(student)
+                prof_list = []
+                for result in prof_result:
+                    name = result['name']
+                    interest = result['interest']
+                    print name, interest
+                    professor = Professor.objects.get(name__icontains=name.split(' ')[0],
+                            interest=interest)
+                    prof_list.append(professor.id)
+                result = Result(stuinterest=student['interest'],
+                        stuname=student['name'], stuaffiliation=
+                        student['affiliation'], date=datetime.now(),
+                        pos1id=prof_list[0], pos2id=prof_list[1],
+                        pos3id=prof_list[2], algoid=Algo.objects.get(pk=1))
+                result.save()
+            request.session['result_id'] = result.id
+            return HttpResponseRedirect(reverse('kdd_matcher:results'))
+    print form
+    return render_to_response('index.html', 
+                                {'form': form},
+                                 context_instance=RequestContext(request))
+
+
+def review(request):
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        print 'in review'
+        print form
+        if form.is_valid() and request.is_ajax():
+            review = form.cleaned_data['review']
+            resultid = form.cleaned_data['resultid']
+            score = form.cleaned_data['score']
+            result = Result.objects.get(pk=resultid)
+            result.review = review
+            result.rating = score
+            result.save()
+            return render(request, 'success.html')
+        else:
+            result = Result.objects.get(pk=form["resultid"].value)
+            return render(request, 'review_form.html',
+                            {'error':'Please don\'t leave a blank',
+                            'form':form,
+                            'result':result})
+
+
 
 def results(request):
     result_id = request.session['result_id']

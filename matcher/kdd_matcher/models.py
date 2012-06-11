@@ -55,6 +55,8 @@ class Result(models.Model):
     pos2id = models.IntegerField(null=True, db_column='pos2ID', blank=True) # Field name made lowercase.
     pos3id = models.IntegerField(null=True, db_column='pos3ID', blank=True) # Field name made lowercase.
     algoid = models.ForeignKey(Algo, db_column='algoID') # Field name made lowercase.
+    rating = models.IntegerField(null=True)
+    review = models.TextField(blank=True)
     class Meta:
         db_table = u'result'
 

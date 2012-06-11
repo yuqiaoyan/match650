@@ -233,7 +233,7 @@ a:hover {
 }
 
 .span1 {
-  width: 60px;
+  width: 120px;
 }
 
 .offset12 {
@@ -5088,4 +5088,11 @@ h6 {
   padding-top: 40px;
   padding-bottom: 20px;
 }
-
+ul.errorlist {
+    list-style:none;
+    color:red;
+    float:right;
+}
+span.error_message{
+    color:red;
+}

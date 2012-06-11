@@ -9,23 +9,6 @@
     
     <!-- Style Sheets -->
     <link href="{{ STATIC_URL }}frameworks/custom/projects/kdd-2012/kdd-2012-full.css" rel="stylesheet">
-    
-    <!-- IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    
-    <!-- Google Analytics -->
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-19663193-1']);
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
   </head>
   <body>
     <div class="container">
@@ -51,22 +34,28 @@
                 <div class="span5 offset1">
                   <fieldset>
                     <div class="control-group">
-                      <label class="control-label" for="input01">Name</label>
+                      {% for field in form %}
+                      <label class="control-label" 
+                             for="{{ field.auto_id }}">
+                             {% if field.required %}
+                             {{ field.required }}
+                             *
+                             {% endif %}
+                             {{ field.label }}
+                      </label>
                       <div class="controls">
-                        <input name="student_name" type="text" class="input-xlarge" id="name" placeholder="Hello, my name is ______">
+                          <input name="{{ field.html_name }}" 
+                          type="text" 
+                          class="input-xlarge" 
+                          id="{{ field.auto_id }}"
+                          {% if field.value %}
+                          value="{{ field.value }}"
+                          {% endif %}
+                          placeholder="{{ field.help_text }}">
+                          {{ field.errors }}
                       </div>
                       <br />
-                      <label class="control-label" for="input01">Interest</label>
-                      <div class="controls">
-                        <input name="student_interest" type="text" class="input-xlarge" id="interest" placeholder="(e.g., Information Retrieval, HCI)">
-                      </div>
-                      <br />
-                      <label class="control-label" for="affliation">University / Work Affiliation</label>
-                      <div class="controls">
-                        <input name="student_affiliation" type="text" class="input-xlarge" id="affliation" placeholder="(e.g., University of Michigan, Baidu)">
-                      </div>
-                      <br />
-                    </div>
+                      {% endfor %}
                   </fieldset>
                 </div>
                 <div class="span5 offset1">

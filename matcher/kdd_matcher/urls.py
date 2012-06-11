@@ -12,6 +12,7 @@ urlpatterns = patterns('kdd_matcher.views',
     url(r'^match$','match'),
     #url(r'^(?P<affiliation>.+)/(?P<name>.+)/(?P<interest>.+)/results/$','results'),
     url(r'^results/$','results', name='results'),
+    url(r'^review/$','review', name='review'),
     # Examples:
     # url(r'^$', 'matcher.views.home', name='home'),
     # url(r'^matcher/', include('matcher.foo.urls')),

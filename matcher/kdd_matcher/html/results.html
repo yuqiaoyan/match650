@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load kdd_filters %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -26,7 +27,7 @@
                 <!-- User Info -->
                 <div class="well sidebar-nav">
                   <ul class="nav nav-list">
-                    <li class="nav-header">{{ STATIC_URL }}Your Information</li>
+                    <li class="nav-header">Your Information</li>
                   </ul>
                   <br />
                   <dl class="dl-horizontal">
@@ -39,26 +40,14 @@
                   </dl>
                 </div><!-- well -->
                 <div class="sidebar-nav">
-                  <button class="btn btn-warning dropdown-toggle feedback" data-toggle="collapse" data-target="#feedback">
-                    <i class="icon-comment icon-white"></i>&nbsp;&nbsp;
-                    Submit Feedback &nbsp;&nbsp;<span class="caret"></span>
-                  </button>
-                  <div id="feedback" class="collapse">
-                    <form>
-                      <textarea class="input-xlarge" id="textarea" rows="8" placeholder="Please input your comments here"></textarea>
-                      <br />
-                        Star Rating
-                        <div id="star"></div>
-                      <br />
-                      <button type="Submit" class="btn btn-success btn-mini">Submit</button>
-                    </form>
-                  </div>
-                </div><!-- feedback -->
+                    {% if not result.rating %}
+                        {% include "review_form.html" %}
+                    {% endif %}
+                </div>
               </div><!-- span3 -->
               <!-- Right Side -->
               <div class="span9">
                 <div class="alert alert-info">
-                  <a class="close" data-dismiss="alert" href="#">×</a>
                   We found 3 experts who match your interests.
                 </div>
                 <!-- Entry #1 -->
@@ -76,9 +65,10 @@
                   <div class="span5">
                       <h3 class="person-name">{{ prof.name }}</h3>
                     <p class="person-information">
+                    <i class="icon-briefcase"></i>{{ prof.position }}<br />
                     <i class="icon-briefcase"></i>{{ prof.affiliation }}<br />
                     <i class="icon-envelope"></i> {{ prof.email }}<br />
-                    <i class="icon-briefcase"></i> <a href="">{{ prof.homepage }}</a>
+                    <i class="icon-briefcase"></i> <a href=""{{ prof.homepage }}>Home Page</a>
                     </p>
                     <br />
                     {% if prof.co_count > 0 %}
@@ -96,10 +86,13 @@
                     </div>
                     {% endif %}
                   </div>
+                  <h4>Research Interest</h4>
                   <div class="span1 interests">
+                    {% for interest in prof.interest|split:"," %}
                     <p>
-                      {{ prof.interest }}
+                      {{ interest|capfirst }}
                     </p>
+                    {% endfor %}
                   </div>
                 </div><!-- row -->
                 <hr />
@@ -133,7 +126,6 @@
     <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-typeahead.js"></script>
     <script src="{{ STATIC_URL }}frameworks/raty/js/jquery.raty.min.js"></script>
     <script type="text/javascript">
-    $('#star').raty();
     </script>
   </body>
 </html>
