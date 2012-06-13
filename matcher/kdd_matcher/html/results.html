@@ -6,7 +6,7 @@
     <title>KDD 2012 Matching System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="KDD 2012 Matching System">
-    <meta name="author" content="Yi Zhou">
+    <meta name="author" content="Developed by Ke Wu and Bonnie Yu. Designed by Yi Zhou - www.zhoufolio.com">
     
     <!-- Style Sheets -->
     <link href="{{ STATIC_URL }}frameworks/custom/projects/kdd-2012/kdd-2012-full.css" rel="stylesheet">
@@ -65,10 +65,10 @@
                   <div class="span5">
                       <h3 class="person-name">{{ prof.name }}</h3>
                     <p class="person-information">
-                    <i class="icon-briefcase"></i>{{ prof.position }}<br />
-                    <i class="icon-briefcase"></i>{{ prof.affiliation }}<br />
+                    <i class="icon-certificate"></i> {{ prof.position }}<br />
+                    <i class="icon-briefcase"></i> {{ prof.affiliation }}<br />
                     <i class="icon-envelope"></i> {{ prof.email }}<br />
-                    <i class="icon-briefcase"></i> <a href=""{{ prof.homepage }}>Home Page</a>
+                    <i class="icon-globe"></i> <a href=""{{ prof.homepage }}>Home Page</a>
                     </p>
                     <br />
                     {% if prof.co_count > 0 %}
@@ -86,8 +86,8 @@
                     </div>
                     {% endif %}
                   </div>
-                  <h4>Research Interest</h4>
                   <div class="span1 interests">
+                    <h3>Research Interest</h3>
                     {% for interest in prof.interest|split:"," %}
                     <p>
                       {{ interest|capfirst }}
@@ -106,7 +106,7 @@
         <p class="pull-right">
           <a href="#">Top</a>
         </p>
-        <p>&copy; 2012 <a href="//www.zhoufolio.com">Zhoufolio</a></p>
+        <p>Developed by <a href="mailto:">Ke Wu</a> and <a href="mailto:">Bonnie Yu</a><br />&copy; 2012</p>
       </footer>
     </div> <!-- /container -->
     <!-- Javascript -->
