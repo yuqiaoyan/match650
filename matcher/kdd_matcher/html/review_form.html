@@ -1,0 +1,39 @@
+<div id="feedback">
+<form action="{% url kdd_matcher:review %}" id="review_form">
+    {% csrf_token %}
+    <textarea class="input-xlarge" 
+        name="review" 
+        id="textarea" 
+        rows="8" 
+        placeholder="Please input your comments here">{{ form.data.review|default:'' }}</textarea>
+    <br />
+    Star Rating
+    <div id="star"></div>
+    <br />
+    <input type="hidden" name="resultid" value="{{ result.id }}" />
+    {% if error %}
+        <span class="error_message"> {{ error }}</span>
+        </br >
+    {% endif %}
+    <button type="Submit" id="sendbutton" class="btn btn-success btn-mini">Submit</button>
+</form>
+</div><!-- feedback -->
+<script src="{{ STATIC_URL }}frameworks/raty/js/jquery.raty.min.js"></script>
+<script type="text/javascript">
+    $('#star').raty();
+    $(function() {
+        var form = $("#review_form");
+        form.submit(function(e) {
+            jQuery("#sendbutton").attr('disabled', true)
+            jQuery("#sendbutton").html('<span>Submitting... </span>')
+            jQuery("#review_form").load(
+                form.attr('action') + ' #feedback',
+                form.serializeArray(),
+                function(responseText, responseStatus) {
+                    $("#feedback").html(responseText);
+                }
+            );
+            e.preventDefault(); 
+        });
+    });
+</script>
