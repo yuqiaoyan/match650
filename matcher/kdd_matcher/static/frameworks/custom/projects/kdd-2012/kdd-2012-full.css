@@ -5033,6 +5033,11 @@ h6 {
   border-left: 5px solid #999;
 }
 
+.black {
+  color: #000;
+  padding-top: 6px;
+}
+
 /* Custom link */
 .footer a {
   color: #666;
