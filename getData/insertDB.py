@@ -84,35 +84,49 @@ def isValidInterest(text):
 def getArnetData(coID):
 #get professor data from Arnetminer API through ID
 # and return the response as a dictionary
+	profList = []
 	url = "http://arnetminer.org/services/person/"
 	url = url + coID + "?u=oyster&o=tff"
-	jsonString = urllib.urlopen(url)
-	profDict = json.loads(jsonString)[0]
-	return profDict
+	jsonString = urllib.urlopen(url).read()
+	profList = json.loads(jsonString)
+	return profList
  
 def getInsertData():
 #main function to get professor data
 #and insert into the database
 
 	con, cur = connectDB()
+	errorID = ""
 
 	file = open("newcoauthorIDs_6_17.csv")
+	i = 0
 	for coid in file:
-		rawDict = getArnetData(coid) 		
-		#ToDo: grab interest data
-		rawDict["Interest"] = get_interest_by_id(str(rawDict["Id"]))
+		#i += 1
+		#if i > 5:
+		#	break
+		try:
+			rawDict = getArnetData(coid.strip())[0] 		
+			#ToDo: grab interest data
+			rawDict["Interest"] = get_interest_by_id(str(rawDict["Id"]))
 	
-		#if Interest is not valid, do not add to DB
-		if not isValidInterest(rawDict["Interest"]): continue
-		#get coauthorIDs as string
-		rawDict["CoauthorID"]= get_coAuthorIds_by_id(str(rawDict["Id"]))
+			#if Interest is not valid, do not add to DB
+			if not isValidInterest(rawDict["Interest"]): continue
+			#get coauthorIDs as string
+			rawDict["CoauthorID"]= get_coAuthorIds_by_id(str(rawDict["Id"]))
 
-		#convert dict to a well formed dictionary
-		#all keys in profKeys must exist in dict
-		profDict = rawDictToProfDict(rawDict)
+			#convert dict to a well formed dictionary
+			#all keys in profKeys must exist in dict
+			profDict = rawDictToProfDict(rawDict)
 
-		#add professor to DB
-		insertProf(profDict,cur,con)
-
+			#add professor to DB
+			insertProf(profDict,cur,con)
+		except:
+			errorID += coid
+			errorID += "\n"
 	file.close()
+	f = open("errorLog.txt","w")
+	f.write(errorID)
+	f.close()
+
+getInsertData()
 		
