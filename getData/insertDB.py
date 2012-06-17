@@ -80,6 +80,15 @@ def isValidInterest(text):
 	if(len(interestPat.findall(text)) > 0):
 		return True
 	return False
+
+def getArnetData(coID):
+#get professor data from Arnetminer API through ID
+# and return the response as a dictionary
+	url = "http://arnetminer.org/services/person/"
+	url = url + coID + "?u=oyster&o=tff"
+	jsonString = urllib.urlopen(url)
+	profDict = json.loads(jsonString)[0]
+	return profDict
  
 def getInsertData():
 #main function to get professor data
@@ -87,9 +96,9 @@ def getInsertData():
 
 	con, cur = connectDB()
 
-	file = open("committees")
-	for line in file:
-		rawDict = parseJSONLine(line)		
+	file = open("newcoauthorIDs_6_17.csv")
+	for coid in file:
+		rawDict = getArnetData(coid) 		
 		#ToDo: grab interest data
 		rawDict["Interest"] = get_interest_by_id(str(rawDict["Id"]))
 	
