@@ -90,7 +90,7 @@
                     <h4 class="black">Interest</h4>
                     {% for interest in prof.interest|split:"," %}
                     <p>
-                      {{ interest|capfirst }}
+                      {{ interest|int_bold:result.stuinterest }}
                     </p>
                     {% endfor %}
                   </div>
@@ -124,8 +124,5 @@
     <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-collapse.js"></script>
     <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-carousel.js"></script>
     <script src="{{ STATIC_URL }}frameworks/bootstrap/js/bootstrap-typeahead.js"></script>
-    <script src="{{ STATIC_URL }}frameworks/raty/js/jquery.raty.min.js"></script>
-    <script type="text/javascript">
-    </script>
   </body>
 </html>
