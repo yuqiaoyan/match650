@@ -22,15 +22,17 @@
     <button type="Submit" id="sendbutton" class="btn btn-success btn-small">Submit</button>
 </form>
 </div><!-- feedback -->
+<script type="text/javascript">var STATIC_URL = "{{STATIC_URL}}" </script> 
+<script src="{{ STATIC_URL }}frameworks/jquery-1.7.2.min.js"></script>
 <script src="{{ STATIC_URL }}frameworks/raty/js/jquery.raty.min.js"></script>
 <script type="text/javascript">
     $('#star').raty();
     $(function() {
         var form = $("#review_form");
         form.submit(function(e) {
-            jQuery("#sendbutton").attr('disabled', true)
-            jQuery("#sendbutton").html('<span>Submitting... </span>')
-            jQuery("#review_form").load(
+            $("#sendbutton").attr('disabled', true)
+            $("#sendbutton").html('<span>Submitting... </span>')
+            $("#review_form").load(
                 form.attr('action') + ' #feedback',
                 form.serializeArray(),
                 function(responseText, responseStatus) {
