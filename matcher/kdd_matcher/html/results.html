@@ -87,12 +87,13 @@
                     {% endif %}
                   </div>
                   <div class="span1 interests">
-                    <h4 class="black">Interest</h4>
-                    {% for interest in prof.interest|split:"," %}
+                    <h4 class="black">Interest</h4><br />
                     <p>
+                    {% for interest in prof.interest|split:"," %}
                       {{ interest|int_bold:result.stuinterest }}
-                    </p>
+                    <br /><br />
                     {% endfor %}
+                    </p>
                   </div>
                 </div><!-- row -->
                 <hr />
