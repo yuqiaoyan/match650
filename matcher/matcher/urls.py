@@ -5,8 +5,7 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'', include('kdd_matcher.urls',
-        namespace='kdd_matcher')),
+    (r'^', include('kdd_matcher.urls', namespace='kdd_matcher')),
     # Examples:
     # url(r'^$', 'matcher.views.home', name='home'),
     # url(r'^matcher/', include('matcher.foo.urls')),

@@ -1,3 +1,7 @@
+from lucene import *
+initVM()
+getVMEnv().attachCurrentThread()
+
 SITE_DIR = '/opt/apps/site/matcher'
 import site
 site.addsitedir(SITE_DIR) 
