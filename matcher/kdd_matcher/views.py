@@ -1,4 +1,5 @@
 from datetime import datetime
+import time
 
 from matcher import matcher
 from models import Professor, Result, Algo
@@ -9,6 +10,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 import lucene
+
+BOOST_1 = {'interest':1.0,'processed_aff':2.0}
+BOOST_2 = {'interest':2.0,'processed_aff':1.0}
 
 def index(request):
     form = QueryForm()
@@ -75,8 +79,15 @@ def match(request):
                 student['name'] = name
                 student['interest'] =interest
                 student['affiliation'] = affiliation
+                timestamp = int(time.time())
+                algo_id = 1
                 prof_matcher = matcher()
-                prof_result= prof_matcher.getProfMatch(student)
+                if timestamp & 1:
+                    boost = BOOST_1
+                else:
+                    boost = BOOST_2
+                    algo_id = 2
+                prof_result = prof_matcher.getProfMatch(student, boosts=boost)
                 prof_list = []
                 for result in prof_result:
                     name = result['name']
@@ -89,11 +100,11 @@ def match(request):
                         stuname=student['name'], stuaffiliation=
                         student['affiliation'], date=datetime.now(),
                         pos1id=prof_list[0], pos2id=prof_list[1],
-                        pos3id=prof_list[2], algoid=Algo.objects.get(pk=1))
+                        pos3id=prof_list[2],
+                        algoid=Algo.objects.get(pk=algo_id))
                 result.save()
             request.session['result_id'] = result.id
             return HttpResponseRedirect(reverse('kdd_matcher:results'))
-    print form
     return render_to_response('index.html', 
                                 {'form': form},
                                  context_instance=RequestContext(request))
