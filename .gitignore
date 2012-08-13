@@ -15,4 +15,7 @@
 Tmp
 *.index-dir
 
+#Settings
+settings.py
+
 
