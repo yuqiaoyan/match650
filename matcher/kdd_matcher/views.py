@@ -1,5 +1,6 @@
 from datetime import datetime
 import time
+import random
 
 from matcher import matcher
 from models import Professor, Result, Algo
@@ -82,7 +83,7 @@ def match(request):
                 timestamp = int(time.time())
                 algo_id = 1
                 prof_matcher = matcher()
-                if timestamp & 1:
+                if random.randint(1,1000) & 1:
                     boost = BOOST_1
                 else:
                     boost = BOOST_2
