@@ -33,6 +33,13 @@
                 <!-- Left side -->
                 <div class="span5 offset1">
                   <fieldset>
+                {% if messages %}
+                <ul class="errorlist">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+                {% endif %}
                     <div class="control-group">
                       {% for field in form %}
                       <label class="control-label" 

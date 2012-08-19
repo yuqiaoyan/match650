@@ -144,6 +144,7 @@ class matcher:
         return query
 
     def getQueryBoost(self,student,fieldList,boosts):
+        print fieldList
         if("processed_aff" in fieldList):
             student["processed_aff"] = shingleQuery(student["affiliation"],2)
         booleanQ = BooleanQuery()
@@ -161,6 +162,8 @@ class matcher:
 	#if affiliation is only one word, then only use affiliation field to do the match
 	#return an updated fieldList and boost dictionary
 	
+        print "get prof update argument >>>>.>>>"
+        print "field list is ", fieldList
         if "processed_aff" in fieldList:
             if(len(student["affiliation"].strip()) == 0):
                 fieldList.remove("processed_aff")
@@ -175,13 +178,12 @@ class matcher:
                 fieldList.append("affiliation")
                 boosts['affiliation']=1.0
 
-			#print "fieldList is", fieldList
         return fieldList,boosts
 
     def validateArguments(self,student,fieldList,boosts):
-#student must have an interest field, processed_aff must be a bigram
-#return true if boost has the same fields as fieldList and they are all floats
-        assert len(student["interest"].strip()) > 1, "Student must have an interest"		
+        #student must have an interest field, processed_aff must be a bigram
+        #return true if boost has the same fields as fieldList and they are all floats
+        assert len(student["interest"].strip()) > 1, "Student must have an interest"
         
         if boosts:
             assert len(boosts.keys()) == len(fieldList),"fieldList and boost must have the same keys" 
@@ -205,6 +207,9 @@ class matcher:
 	#by default "interests" = 1.25
 	#           "processed_aff" = 1.0
 
+        print "get prof Match >>>>.>>>"
+        print "boost ", boosts
+        print "field list is ", fieldList
         if(self.validateArguments(student,fieldList,boosts)):
             self.fieldList,boosts = self.updateArguments(student,fieldList,boosts)
 

@@ -1,19 +1,21 @@
 from datetime import datetime
-import time
 import random
 
 from matcher import matcher
 from models import Professor, Result, Algo
 from .forms import QueryForm, ReviewForm
 
+from django import forms
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
+
 import lucene
 
-BOOST_1 = {'interest':1.0,'processed_aff':2.0}
-BOOST_2 = {'interest':2.0,'processed_aff':1.0}
+BOOST_1 = {'interest':1.0, 'processed_aff':2.0}
+BOOST_2 = {'interest':2.0, 'processed_aff':1.0}
 
 def index(request):
     form = QueryForm()
@@ -80,15 +82,32 @@ def match(request):
                 student['name'] = name
                 student['interest'] =interest
                 student['affiliation'] = affiliation
-                timestamp = int(time.time())
                 algo_id = 1
                 prof_matcher = matcher()
                 if random.randint(1,1000) & 1:
-                    boost = BOOST_1
+                    boost = {'interest':1.0, 'processed_aff':2.0}
                 else:
-                    boost = BOOST_2
+                    boost = {'interest':2.0, 'processed_aff':1.0}
                     algo_id = 2
-                prof_result = prof_matcher.getProfMatch(student, boosts=boost)
+                try:
+                    prof_result = prof_matcher.getProfMatch(student,
+                                  fieldList = ["interest","processed_aff"],
+                                  boosts=boost)
+                except:
+                    messages.error(request, "Sorry, but I can't recognize your query.")
+                    return render_to_response('index.html',
+                                              {'form': form},
+                                              context_instance=
+                                              RequestContext(request))
+
+                if not prof_result:
+                    messages.error(request, "Can't found "
+                    "enough experts to show to you, please adjust "
+                    "the query.")
+                    return render_to_response('index.html',
+                                              {'form': form},
+                                              context_instance=
+                                              RequestContext(request))
                 prof_list = []
                 for result in prof_result:
                     name = result['name']
@@ -97,6 +116,7 @@ def match(request):
                     professor = Professor.objects.get(name__icontains=name.split(' ')[0],
                             interest=interest)
                     prof_list.append(professor.id)
+                print prof_list
                 result = Result(stuinterest=student['interest'],
                         stuname=student['name'], stuaffiliation=
                         student['affiliation'], date=datetime.now(),
@@ -106,9 +126,11 @@ def match(request):
                 result.save()
             request.session['result_id'] = result.id
             return HttpResponseRedirect(reverse('kdd_matcher:results'))
-    return render_to_response('index.html', 
-                                {'form': form},
-                                 context_instance=RequestContext(request))
+        else:
+            return render_to_response('index.html', 
+                                      {'form': form},
+                                      context_instance
+                                      =RequestContext(request))
 
 
 def review(request):
