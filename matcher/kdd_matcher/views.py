@@ -109,10 +109,27 @@ def match(request):
                 prof_list = []
                 for result in prof_result:
                     name = result['name']
+                    print name
                     interest = result['interest']
-                    professor = Professor.objects.get(name__icontains=name.split(' ')[0],
-                            interest=interest)
+                    print interest
+                    try:
+                        professor = Professor.objects.get(name__icontains=name.split(' ')[0],
+                                                          interest=interest)
+                    except:
+                        try:
+                            professor = Professor.objects.get(name__icontains=name.split(' ')[-1],
+                                                            interest=interest)
+                        except:
+                            continue
                     prof_list.append(professor.id)
+                if len(prof_list) < 3:
+                    messages.error(request, "Can't found "
+                    "enough experts to show to you, please adjust "
+                    "the query.")
+                    return render_to_response('index.html',
+                                              {'form': form},
+                                              context_instance=
+                                              RequestContext(request))
                 result = Result(stuinterest=student['interest'],
                         stuname=student['name'], stuaffiliation=
                         student['affiliation'], date=datetime.now(),
