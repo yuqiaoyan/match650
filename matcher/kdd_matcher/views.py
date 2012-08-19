@@ -56,11 +56,9 @@ def matchE(request):
         	score,explainList = prof_matcher.explainPos(i+1)
 		info_list.append((prof,score,explainList))
 	for prof in prof_list:
-            print prof['name']
             aff_count = prof['affiliation'].count(student['affiliation'])
             prof['co_count'] = aff_count
         student = request.session.get('student')
-        print 'in match', student, prof_list[0].get('name')
         return render_to_response('explain.html', {'info_list':info_list,'student':student})
         #return HttpResponseRedirect(reverse('kdd_matcher.views.results'))
 
@@ -112,11 +110,9 @@ def match(request):
                 for result in prof_result:
                     name = result['name']
                     interest = result['interest']
-                    print name, interest
                     professor = Professor.objects.get(name__icontains=name.split(' ')[0],
                             interest=interest)
                     prof_list.append(professor.id)
-                print prof_list
                 result = Result(stuinterest=student['interest'],
                         stuname=student['name'], stuaffiliation=
                         student['affiliation'], date=datetime.now(),
@@ -136,8 +132,6 @@ def match(request):
 def review(request):
     if request.method == "POST":
         form = ReviewForm(request.POST)
-        print 'in review'
-        print form
         if form.is_valid() and request.is_ajax():
             review = form.cleaned_data['review']
             resultid = form.cleaned_data['resultid']

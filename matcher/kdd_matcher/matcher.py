@@ -45,8 +45,6 @@ def getFieldExplainList(explain,fieldList):
                     fieldExplainList[index]['matchedItems'] = match
             except:
                 raise
-                #print "index is", index
-                #print "field name", fieldName
     return fieldExplainList
 
 def getScore(explain):
@@ -128,13 +126,11 @@ class matcher:
         if("processed_aff" in fieldList):
             student["processed_aff"] = shingleQuery(student["affiliation"],2)
         queryList = getQueryList(student,fieldList)
-        #print fieldList,queryList
 
         if boosts:
                 #Lucene requires a Map class,copy boosts as a boostMap
                 boostMap = HashMap()
                 for key in boosts.keys():
-                        #print "%s boost is: %s" % (key,boosts[key])
                         boostMap.put(key,boosts[key])
             
                 query = MultiFieldQueryParser(Version.LUCENE_35,fieldList,self.analyzer,boostMap).parse(Version.LUCENE_35,queryList,fieldList,self.analyzer)
@@ -144,7 +140,6 @@ class matcher:
         return query
 
     def getQueryBoost(self,student,fieldList,boosts):
-        print fieldList
         if("processed_aff" in fieldList):
             student["processed_aff"] = shingleQuery(student["affiliation"],2)
         booleanQ = BooleanQuery()
@@ -154,7 +149,6 @@ class matcher:
             query.setBoost(boosts[field])
             booleanQ.add(query,BooleanClause.Occur.SHOULD) 
 
-        print "booleanQ is", booleanQ
         return booleanQ
 
     def updateArguments(self,student,fieldList,boosts):
@@ -162,8 +156,6 @@ class matcher:
 	#if affiliation is only one word, then only use affiliation field to do the match
 	#return an updated fieldList and boost dictionary
 	
-        print "get prof update argument >>>>.>>>"
-        print "field list is ", fieldList
         if "processed_aff" in fieldList:
             if(len(student["affiliation"].strip()) == 0):
                 fieldList.remove("processed_aff")
@@ -207,9 +199,6 @@ class matcher:
 	#by default "interests" = 1.25
 	#           "processed_aff" = 1.0
 
-        print "get prof Match >>>>.>>>"
-        print "boost ", boosts
-        print "field list is ", fieldList
         if(self.validateArguments(student,fieldList,boosts)):
             self.fieldList,boosts = self.updateArguments(student,fieldList,boosts)
 
@@ -236,7 +225,6 @@ class matcher:
         #save the most recent list of results	
         self.recentResult = profList
 
-        #print "We found" + str(len(profList)) + "results"
 
         return profList
 
